@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>打款周期估算</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="top">
+    <div>
+      <p class="kicker">内部方案实例</p>
+      <h1>打款周期估算</h1>
+    </div>
+    <button type="button" class="text-btn" id="open-source">查看供应商表</button>
+  </header>
+
+  <main class="layout">
+    <section class="panel form-panel" aria-label="发放单">
+      <h2>发放单</h2>
+      <div class="seg filter" id="grant-filter">
+        <button type="button" data-filter="all" class="on">全部</button>
+        <button type="button" data-filter="open">未提现</button>
+        <button type="button" data-filter="paid">已提现</button>
+      </div>
+      <div id="grant-list" class="grant-list"></div>
+    </section>
+
+    <section class="results" aria-live="polite">
+      <article class="user-card" id="user-card">
+        <p class="kicker light" id="user-kicker">用户将看到</p>
+        <h2 id="user-title"></h2>
+        <p id="user-detail"></p>
+      </article>
+      <article class="panel internal-panel" id="internal"></article>
+    </section>
+  </main>
+
+  <dialog id="source-modal">
+    <div class="dialog-bar">
+      <div>
+        <h2>当前供应商表</h2>
+        <p>同供应商、同转出方式、同限额的多行已合并。一笔单只走一条通道，额度不叠加。</p>
+      </div>
+      <button type="button" class="text-btn" id="close-source">关闭</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>供应商</th>
+            <th>转出方式</th>
+            <th>单笔限额</th>
+            <th>每人限额</th>
+            <th>适用场景</th>
+            <th>表序</th>
+          </tr>
+        </thead>
+        <tbody id="source-body"></tbody>
+      </table>
+    </div>
+  </dialog>
+
+  <script src="./app.js"></script>
+</body>
+</html>
