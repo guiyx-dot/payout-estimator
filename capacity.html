@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>打款产能报表</title>
+  <link rel="stylesheet" href="./styles.css?v=15" />
+</head>
+<body class="page-capacity">
+  <header class="top">
+    <div>
+      <p class="kicker">内部方案实例 · 2026年11月2日 · 模拟今日已用</p>
+      <h1>打款产能报表</h1>
+    </div>
+    <div class="top-actions">
+      <a class="text-btn" href="./index.html">周期估算</a>
+    </div>
+  </header>
+
+  <div class="cap-filters look-chips" id="cap-filters">
+    <div class="filter-line">
+      <span>场景</span>
+      <div class="seg filter">
+        <button type="button" data-scene="" class="on">全部</button>
+        <button type="button" data-scene="新车">新车</button>
+        <button type="button" data-scene="续保">续保</button>
+        <button type="button" data-scene="事故车">事故车</button>
+      </div>
+    </div>
+    <div class="filter-line">
+      <span>转出</span>
+      <div class="seg filter">
+        <button type="button" data-method="" class="on">全部</button>
+        <button type="button" data-method="微信">微信</button>
+        <button type="button" data-method="支付宝">支付宝</button>
+        <button type="button" data-method="银行卡">银行卡</button>
+      </div>
+    </div>
+    <div class="filter-line">
+      <span>状态</span>
+      <div class="seg filter">
+        <button type="button" data-status="" class="on">全部</button>
+        <button type="button" data-status="充足">充足</button>
+        <button type="button" data-status="紧张">紧张</button>
+        <button type="button" data-status="耗尽">耗尽</button>
+        <button type="button" data-status="未知">未知</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="view" class="cap-view"></div>
+
+  <script src="./capacity.js?v=16"></script>
+</body>
+</html>
