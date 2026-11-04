@@ -1,13 +1,13 @@
 const CHANNELS = [
-  { id: "caikang", supplier: "财康", methods: ["支付宝"], perTxn: null, daily: null, scenes: ["新车"], tableOrder: 1, unknownLimit: false },
-  { id: "liuliu-wx", supplier: "六六猴", methods: ["微信"], perTxn: 200, daily: 2000, scenes: ["续保"], tableOrder: 2, unknownLimit: false },
-  { id: "jishifa-wx", supplier: "及时发", methods: ["微信"], perTxn: 200, daily: 2000, scenes: ["续保", "新车"], tableOrder: 3, unknownLimit: false },
-  { id: "jishifa-ali", supplier: "及时发", methods: ["支付宝"], perTxn: 1000, daily: 1000, scenes: ["续保", "新车"], tableOrder: 4, unknownLimit: false },
-  { id: "nashang", supplier: "纳尚", methods: ["微信"], perTxn: 200, daily: 500, scenes: ["续保"], tableOrder: 5, unknownLimit: false },
-  { id: "ganen", supplier: "感恩", methods: ["支付宝", "银行卡"], perTxn: null, daily: null, scenes: ["事故车"], tableOrder: 6, unknownLimit: true },
-  { id: "luxi", supplier: "鹿喜", methods: ["微信"], perTxn: 200, daily: 2000, scenes: ["续保"], tableOrder: 7, unknownLimit: false },
-  { id: "jiji", supplier: "季积", methods: ["支付宝"], perTxn: 500, daily: 1000, scenes: ["续保", "新车"], tableOrder: 8, unknownLimit: false },
-  { id: "lushutong", supplier: "鹿数通", methods: ["微信", "支付宝"], perTxn: 200, daily: 1000, scenes: ["续保", "新车"], tableOrder: 9, unknownLimit: false },
+  { id: "caikang", supplier: "财康", methods: ["支付宝"], scheme: "非税方案", perTxn: null, daily: null, scenes: ["新车"], tableOrder: 1, unknownLimit: false },
+  { id: "liuliu-wx", supplier: "六六猴", methods: ["微信"], scheme: "连续劳务", perTxn: 200, daily: 2000, scenes: ["续保"], tableOrder: 2, unknownLimit: false },
+  { id: "jishifa-wx", supplier: "及时发", methods: ["微信"], scheme: "连续劳务", perTxn: 200, daily: 2000, scenes: ["续保", "新车"], tableOrder: 3, unknownLimit: false },
+  { id: "jishifa-ali", supplier: "及时发", methods: ["支付宝"], scheme: "非税方案", perTxn: 1000, daily: 1000, scenes: ["续保", "新车"], tableOrder: 4, unknownLimit: false },
+  { id: "nashang", supplier: "纳尚", methods: ["微信"], scheme: "连续劳务", perTxn: 200, daily: 500, scenes: ["续保"], tableOrder: 5, unknownLimit: false },
+  { id: "ganen", supplier: "感恩", methods: ["支付宝", "银行卡"], scheme: "非税方案", perTxn: null, daily: null, scenes: ["事故车"], tableOrder: 6, unknownLimit: true },
+  { id: "luxi", supplier: "鹿喜", methods: ["微信"], scheme: "连续劳务", perTxn: 200, daily: 2000, scenes: ["续保"], tableOrder: 7, unknownLimit: false },
+  { id: "jiji", supplier: "季积", methods: ["支付宝"], scheme: "非税方案", perTxn: 500, daily: 1000, scenes: ["续保", "新车"], tableOrder: 8, unknownLimit: false },
+  { id: "lushutong", supplier: "鹿数通", methods: ["微信", "支付宝"], scheme: "微信连续劳务 / 支付宝非税方案", perTxn: 200, daily: 1000, scenes: ["续保", "新车"], tableOrder: 9, unknownLimit: false },
 ];
 
 const GRANTS = [
@@ -424,6 +424,7 @@ function renderSource() {
     const per = ch.unknownLimit ? "/" : ch.perTxn == null ? "不限制" : yuan(ch.perTxn);
     return `<tr>
       <td>${ch.supplier}</td>
+      <td>${ch.scheme}</td>
       <td>${ch.methods.join("、")}</td>
       <td class="num">${per}</td>
       <td class="num">${daily}</td>

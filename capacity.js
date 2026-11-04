@@ -1,29 +1,30 @@
 const CHANNELS = [
-  { id: "caikang", supplier: "财康", name: "支付宝-新车", method: "支付宝", scenes: ["新车"], perTxn: null, personDaily: null, capTxn: 2000, capAmount: 500000, usedTxn: 412, usedAmount: 186000, note: "每人原不限制，日产能按模拟结算上限" },
-  { id: "liuliu-1", supplier: "六六猴", name: "微信-①", method: "微信", scenes: ["续保"], perTxn: 200, personDaily: 2000, capTxn: 400, capAmount: 80000, usedTxn: 260, usedAmount: 52000 },
-  { id: "liuliu-2", supplier: "六六猴", name: "微信-②", method: "微信", scenes: ["续保"], perTxn: 200, personDaily: 2000, capTxn: 400, capAmount: 80000, usedTxn: 305, usedAmount: 61000 },
-  { id: "liuliu-3", supplier: "六六猴", name: "微信-③", method: "微信", scenes: ["续保"], perTxn: 200, personDaily: 2000, capTxn: 300, capAmount: 60000, usedTxn: 270, usedAmount: 54000 },
-  { id: "jishifa-wx-1", supplier: "及时发", name: "微信-①", method: "微信", scenes: ["续保", "新车"], perTxn: 200, personDaily: 2000, capTxn: 500, capAmount: 100000, usedTxn: 365, usedAmount: 73000 },
-  { id: "jishifa-wx-2", supplier: "及时发", name: "微信-②", method: "微信", scenes: ["续保", "新车"], perTxn: 200, personDaily: 2000, capTxn: 500, capAmount: 100000, usedTxn: 440, usedAmount: 88000 },
-  { id: "jishifa-wx-3", supplier: "及时发", name: "微信-③", method: "微信", scenes: ["续保", "新车"], perTxn: 200, personDaily: 2000, capTxn: 400, capAmount: 80000, usedTxn: 400, usedAmount: 80000 },
-  { id: "jishifa-ali", supplier: "及时发", name: "支付宝", method: "支付宝", scenes: ["续保", "新车"], perTxn: 1000, personDaily: 1000, capTxn: 120, capAmount: 120000, usedTxn: 46, usedAmount: 46000 },
-  { id: "nashang-1", supplier: "纳尚", name: "微信-①", method: "微信", scenes: ["续保"], perTxn: 200, personDaily: 500, capTxn: 200, capAmount: 40000, usedTxn: 145, usedAmount: 29000 },
-  { id: "nashang-2", supplier: "纳尚", name: "微信-②", method: "微信", scenes: ["续保"], perTxn: 200, personDaily: 500, capTxn: 200, capAmount: 40000, usedTxn: 185, usedAmount: 37000 },
-  { id: "nashang-3", supplier: "纳尚", name: "微信-③", method: "微信", scenes: ["续保"], perTxn: 200, personDaily: 500, capTxn: 150, capAmount: 30000, usedTxn: 60, usedAmount: 12000 },
-  { id: "ganen-ali", supplier: "感恩", name: "支付宝", method: "支付宝", scenes: ["事故车"], perTxn: null, personDaily: null, capTxn: null, capAmount: null, usedTxn: null, usedAmount: null, unknown: true },
-  { id: "ganen-bank", supplier: "感恩", name: "银行卡", method: "银行卡", scenes: ["事故车"], perTxn: null, personDaily: null, capTxn: null, capAmount: null, usedTxn: null, usedAmount: null, unknown: true },
-  { id: "luxi", supplier: "鹿喜", name: "微信", method: "微信", scenes: ["续保"], perTxn: 200, personDaily: 2000, capTxn: 450, capAmount: 90000, usedTxn: 205, usedAmount: 41000 },
-  { id: "jiji", supplier: "季积", name: "支付宝", method: "支付宝", scenes: ["续保", "新车"], perTxn: 500, personDaily: 1000, capTxn: 160, capAmount: 80000, usedTxn: 66, usedAmount: 33000 },
-  { id: "lushutong-wx", supplier: "鹿数通", name: "微信", method: "微信", scenes: ["续保", "新车"], perTxn: 200, personDaily: 1000, capTxn: 350, capAmount: 70000, usedTxn: 275, usedAmount: 55000 },
-  { id: "lushutong-ali", supplier: "鹿数通", name: "支付宝", method: "支付宝", scenes: ["续保", "新车"], perTxn: 200, personDaily: 1000, capTxn: 350, capAmount: 70000, usedTxn: 110, usedAmount: 22000 },
+  { id: "caikang", supplier: "财康", name: "支付宝-新车", method: "支付宝", scheme: "非税方案", scenes: ["新车"], perTxn: null, personDaily: null, capTxn: 2000, capAmount: 500000, usedTxn: 412, usedAmount: 186000, note: "每人原不限制，日产能按模拟结算上限" },
+  { id: "liuliu-1", supplier: "六六猴", name: "微信-①", method: "微信", scheme: "连续劳务", scenes: ["续保"], perTxn: 200, personDaily: 2000, capTxn: 400, capAmount: 80000, usedTxn: 260, usedAmount: 52000 },
+  { id: "liuliu-2", supplier: "六六猴", name: "微信-②", method: "微信", scheme: "连续劳务", scenes: ["续保"], perTxn: 200, personDaily: 2000, capTxn: 400, capAmount: 80000, usedTxn: 305, usedAmount: 61000 },
+  { id: "liuliu-3", supplier: "六六猴", name: "微信-③", method: "微信", scheme: "连续劳务", scenes: ["续保"], perTxn: 200, personDaily: 2000, capTxn: 300, capAmount: 60000, usedTxn: 270, usedAmount: 54000 },
+  { id: "jishifa-wx-1", supplier: "及时发", name: "微信-①", method: "微信", scheme: "连续劳务", scenes: ["续保", "新车"], perTxn: 200, personDaily: 2000, capTxn: 500, capAmount: 100000, usedTxn: 365, usedAmount: 73000 },
+  { id: "jishifa-wx-2", supplier: "及时发", name: "微信-②", method: "微信", scheme: "连续劳务", scenes: ["续保", "新车"], perTxn: 200, personDaily: 2000, capTxn: 500, capAmount: 100000, usedTxn: 440, usedAmount: 88000 },
+  { id: "jishifa-wx-3", supplier: "及时发", name: "微信-③", method: "微信", scheme: "连续劳务", scenes: ["续保", "新车"], perTxn: 200, personDaily: 2000, capTxn: 400, capAmount: 80000, usedTxn: 400, usedAmount: 80000 },
+  { id: "jishifa-ali", supplier: "及时发", name: "支付宝", method: "支付宝", scheme: "非税方案", scenes: ["续保", "新车"], perTxn: 1000, personDaily: 1000, capTxn: 120, capAmount: 120000, usedTxn: 46, usedAmount: 46000 },
+  { id: "nashang-1", supplier: "纳尚", name: "微信-①", method: "微信", scheme: "连续劳务", scenes: ["续保"], perTxn: 200, personDaily: 500, capTxn: 200, capAmount: 40000, usedTxn: 145, usedAmount: 29000 },
+  { id: "nashang-2", supplier: "纳尚", name: "微信-②", method: "微信", scheme: "连续劳务", scenes: ["续保"], perTxn: 200, personDaily: 500, capTxn: 200, capAmount: 40000, usedTxn: 185, usedAmount: 37000 },
+  { id: "nashang-3", supplier: "纳尚", name: "微信-③", method: "微信", scheme: "连续劳务", scenes: ["续保"], perTxn: 200, personDaily: 500, capTxn: 150, capAmount: 30000, usedTxn: 60, usedAmount: 12000 },
+  { id: "ganen-ali", supplier: "感恩", name: "支付宝", method: "支付宝", scheme: "非税方案", scenes: ["事故车"], perTxn: null, personDaily: null, capTxn: null, capAmount: null, usedTxn: null, usedAmount: null, unknown: true },
+  { id: "ganen-bank", supplier: "感恩", name: "银行卡", method: "银行卡", scheme: "非税方案", scenes: ["事故车"], perTxn: null, personDaily: null, capTxn: null, capAmount: null, usedTxn: null, usedAmount: null, unknown: true },
+  { id: "luxi", supplier: "鹿喜", name: "微信", method: "微信", scheme: "连续劳务", scenes: ["续保"], perTxn: 200, personDaily: 2000, capTxn: 450, capAmount: 90000, usedTxn: 205, usedAmount: 41000 },
+  { id: "jiji", supplier: "季积", name: "支付宝", method: "支付宝", scheme: "非税方案", scenes: ["续保", "新车"], perTxn: 500, personDaily: 1000, capTxn: 160, capAmount: 80000, usedTxn: 66, usedAmount: 33000 },
+  { id: "lushutong-wx", supplier: "鹿数通", name: "微信", method: "微信", scheme: "连续劳务", scenes: ["续保", "新车"], perTxn: 200, personDaily: 1000, capTxn: 350, capAmount: 70000, usedTxn: 275, usedAmount: 55000 },
+  { id: "lushutong-ali", supplier: "鹿数通", name: "支付宝", method: "支付宝", scheme: "非税方案", scenes: ["续保", "新车"], perTxn: 200, personDaily: 1000, capTxn: 350, capAmount: 70000, usedTxn: 110, usedAmount: 22000 },
 ];
 
 const METHOD_ORDER = ["微信", "支付宝", "银行卡"];
 const SCENE_ORDER = ["新车", "续保", "事故车"];
 const STATUS_ORDER = ["充足", "紧张", "耗尽", "未知"];
+const SCHEME_ORDER = ["连续劳务", "非税方案"];
 
 const $ = (id) => document.getElementById(id);
-const state = { scene: "", method: "", status: "" };
+const state = { scene: "", method: "", status: "", scheme: "" };
 
 function yuan(n) {
   return n.toLocaleString("zh-CN", { maximumFractionDigits: 0 });
@@ -50,11 +51,27 @@ function statusOf(ch) {
 function barClass(st) {
   return st === "耗尽" ? "empty" : st === "紧张" ? "tight" : st === "未知" ? "unk" : "ok";
 }
-function visible() {
+function scoped() {
   return CHANNELS.filter((ch) => {
     if (state.scene && !ch.scenes.includes(state.scene)) return false;
     if (state.method && ch.method !== state.method) return false;
     return true;
+  });
+}
+function visible() {
+  return scoped().filter((ch) => {
+    if (state.scheme && ch.scheme !== state.scheme) return false;
+    return true;
+  });
+}
+function schemeBadge(ch) {
+  const short = ch.scheme === "非税方案" ? "非税" : "劳务";
+  return `<i class="scheme-tag sch-${ch.scheme}">${short}</i>`;
+}
+function schemeStats(list) {
+  return SCHEME_ORDER.map((scheme) => {
+    const subset = list.filter((ch) => ch.scheme === scheme);
+    return { scheme, n: subset.length, ...sumKnown(subset) };
   });
 }
 function sumKnown(list) {
@@ -131,6 +148,137 @@ function splitBar(ch) {
   return `<div class="split-bar"><i class="used" style="flex-grow:${usedPct}"></i><i class="${restCls}" style="flex-grow:${restPct}"></i></div>`;
 }
 
+function donutSvg(rate) {
+  const p = Math.max(0, Math.min(100, Math.round((rate || 0) * 100)));
+  return `<svg class="donut" viewBox="0 0 36 36" aria-hidden="true">
+    <circle class="donut-bg" cx="18" cy="18" r="14" pathLength="100"></circle>
+    <circle class="donut-val" cx="18" cy="18" r="14" pathLength="100" stroke-dasharray="${p} ${100 - p}"></circle>
+  </svg>`;
+}
+
+function splitBars(title, items) {
+  const max = Math.max(0, ...items.map((it) => it.left));
+  const rows = items
+    .map((it) => {
+      const w = it.unknown ? 0 : max ? Math.round((it.left / max) * 100) : 0;
+      const val = it.unknown ? "未知" : it.empty ? "—" : wan(it.left);
+      const cls = it.unknown ? "未知" : it.empty ? "" : it.left <= 0 ? "耗尽" : it.rate >= 0.8 ? "紧张" : "充足";
+      return `<div class="hbar st-${cls}">
+        <span>${it.label}</span>
+        <div class="hbar-track">${it.unknown ? `<i class="unk"></i>` : `<i style="width:${w}%"></i>`}</div>
+        <strong>${val}</strong>
+      </div>`;
+    })
+    .join("");
+  return `<p class="dash-label chart-sub">${title}</p><div class="hbar-list">${rows}</div>`;
+}
+
+function renderSplit(list) {
+  const schemes = SCHEME_ORDER.map((scheme) => {
+    const subset = list.filter((ch) => ch.scheme === scheme);
+    const s = sumKnown(subset);
+    return { label: scheme === "非税方案" ? "非税" : "劳务", left: Math.max(0, s.left), rate: s.rate, unknown: !s.known && !!s.unknown, empty: !subset.length };
+  });
+  const scenes = SCENE_ORDER.map((scene) => {
+    const subset = list.filter((ch) => ch.scenes.includes(scene));
+    const s = sumKnown(subset);
+    return { label: scene, left: Math.max(0, s.left), rate: s.rate, unknown: !s.known && !!s.unknown, empty: !subset.length };
+  });
+  const methods = METHOD_ORDER.map((method) => {
+    const subset = list.filter((ch) => ch.method === method);
+    const s = sumKnown(subset);
+    return { label: method, left: Math.max(0, s.left), rate: s.rate, unknown: !s.known && !!s.unknown, empty: !subset.length };
+  });
+  return splitBars("方案剩余", schemes) + splitBars("场景剩余", scenes) + splitBars("转出剩余", methods);
+}
+
+function renderSchemePair(list) {
+  const stats = schemeStats(list);
+  const max = Math.max(1, ...stats.flatMap((s) => (s.known ? [s.cap, s.used, Math.max(0, s.left)] : [0])));
+  const head = `<div class="pair-row pair-head"><span></span><div class="pair-bars">${SCHEME_ORDER.map((scheme) => `<em class="sch-${scheme}">${scheme}</em>`).join("")}</div></div>`;
+  const rows = [
+    { label: "产能", get: (s) => (s.known ? s.cap : null) },
+    { label: "已用", get: (s) => (s.known ? s.used : null) },
+    { label: "还可打", get: (s) => (s.known ? Math.max(0, s.left) : null) },
+  ]
+    .map((row) => {
+      const cells = stats
+        .map((s) => {
+          const v = row.get(s);
+          const w = v == null ? 0 : Math.round((v / max) * 100);
+          const val = v == null ? (s.n ? "未知" : "—") : wan(v);
+          return `<div class="pair-bar sch-${s.scheme}"><div class="hbar-track">${s.n && v == null ? `<i class="unk"></i>` : `<i style="width:${w}%"></i>`}</div><b>${val}</b></div>`;
+        })
+        .join("");
+      return `<div class="pair-row"><span>${row.label}</span><div class="pair-bars">${cells}</div></div>`;
+    })
+    .join("");
+  const rates = stats
+    .map((s) => `<span class="sch-${s.scheme}">${s.scheme === "非税方案" ? "非税" : "劳务"} ${s.known ? pct(s) : "—"} · ${s.n} 条</span>`)
+    .join("");
+  return `
+    <div class="scheme-block">
+    <div class="chart-head">
+      <p class="dash-label">方案对比</p>
+      <p class="muted">两边产能、已用、还可打并排看，用来倾向选供和分流</p>
+    </div>
+    <div class="scheme-pair">${head}${rows}</div>
+    <p class="scheme-rate">${rates}</p>
+    </div>`;
+}
+
+function renderSchemeCards(list) {
+  return SCHEME_ORDER.map((scheme) => {
+    const subset = list.filter((ch) => ch.scheme === scheme);
+    const s = sumKnown(subset);
+    const n = subset.length;
+    const amount = !s.known ? (n ? "未知" : "—") : wan(Math.max(0, s.left));
+    const capLine = s.known ? "已用 " + wan(s.used) + " / 产能 " + wan(s.cap) : n ? "限额未明确" : "—";
+    const sub = !n ? "没有通道" : !s.known ? n + " 条通道" : "还可打 · 使用率 " + pct(s);
+    const on = state.scheme === scheme ? " on" : "";
+    const empty = n ? "" : " empty";
+    const st = !s.known ? "未知" : s.left <= 0 ? "耗尽" : s.rate >= 0.8 ? "紧张" : "充足";
+    return `<button type="button" class="scheme-card sch-${scheme}${on}${empty}" data-scheme="${scheme}"${n ? "" : " disabled"}>
+      <span class="st-head">${scheme}<i>${n}</i></span>
+      <strong>${amount}</strong>
+      <em>${sub}</em>
+      ${methodSplitBar(s, st)}
+      <p>${capLine}</p>
+    </button>`;
+  }).join("");
+}
+
+function renderChart(list) {
+  const bars = list
+    .filter((ch) => !ch.unknown && ch.capAmount)
+    .sort((a, b) => b.usedAmount / b.capAmount - a.usedAmount / a.capAmount)
+    .slice(0, 8);
+  const cols = bars
+    .map((ch) => {
+      const rate = Math.min(100, Math.round((ch.usedAmount / ch.capAmount) * 100));
+      const st = statusOf(ch);
+      return `<div class="vbar st-${st} sch-${ch.scheme}">
+        <span>${rate}%</span>
+        <div class="vbar-col"><i style="height:${rate}%"></i></div>
+        <em>${ch.supplier}</em>
+        <b>${schemeBadge(ch)} ${ch.name}</b>
+      </div>`;
+    })
+    .join("");
+  return `
+    <div class="chart-block">
+      <div class="chart-head">
+        <p class="dash-label">通道使用率</p>
+        <p class="muted">柱高是已用占日产能，最多看 8 条</p>
+      </div>
+      <div class="vbars-wrap">
+        <div class="vbars-y"><span>100%</span><span>50%</span><span>0%</span></div>
+        <div class="vbars">${cols || `<p class="muted">没有可计量通道</p>`}</div>
+      </div>
+    </div>
+    ${renderSchemePair(scoped())}`;
+}
+
 function methodSplitBar(s, st) {
   if (!s.known) return `<div class="split-bar"><i class="unk"></i></div>`;
   const usedPct = Math.min(100, s.rate * 100);
@@ -158,7 +306,8 @@ function tableHtml(list) {
       const txn = ch.capTxn == null ? "—" : `${(ch.usedTxn || 0).toLocaleString("zh-CN")} / ${ch.capTxn.toLocaleString("zh-CN")} 笔`;
       const person = ch.personDaily == null ? (ch.unknown ? "/" : "不限制") : yuan(ch.personDaily) + "/人日";
       return `<tr class="st-${st}">
-        <td>${ch.supplier}<div class="muted">${ch.name}</div></td>
+        <td>${ch.supplier} ${schemeBadge(ch)}<div class="muted">${ch.name}</div></td>
+        <td>${ch.scheme}</td>
         <td>${ch.method}</td>
         <td>${ch.scenes.join("、")}</td>
         <td class="num">${person}</td>
@@ -170,7 +319,7 @@ function tableHtml(list) {
     })
     .join("");
   return `<table>
-    <thead><tr><th>通道</th><th>转出</th><th>场景</th><th>每人限额</th><th>日产能</th><th>已用</th><th>还可打</th><th>占用</th></tr></thead>
+    <thead><tr><th>通道</th><th>方案</th><th>转出</th><th>场景</th><th>每人限额</th><th>日产能</th><th>已用</th><th>还可打</th><th>占用</th></tr></thead>
     <tbody>${body}</tbody>
   </table>`;
 }
@@ -220,28 +369,50 @@ function renderRemain(list) {
       const st = statusOf(ch);
       const left = leftOf(ch);
       const capLine = ch.unknown || ch.capAmount == null ? "限额未知" : wan(ch.usedAmount) + " / " + wan(ch.capAmount);
-      return `<div class="bar-row st-${st}">
+      return `<div class="bar-row st-${st} sch-${ch.scheme}">
         <div class="bar-left">${left == null ? "未知" : wan(left)}<em>${st}</em></div>
-        <div class="bar-name">${ch.supplier} ${ch.name}<em>${ch.method} · ${ch.scenes.join("、")}</em></div>
+        <div class="bar-name">${ch.supplier} ${ch.name}${schemeBadge(ch)}<em>${ch.method} · ${ch.scenes.join("、")}</em></div>
         <div class="bar-track">${splitBar(ch)}<em>${capLine}</em></div>
       </div>`;
     })
     .join("");
 
-  const title = state.status
-    ? `通道剩余 · ${state.status} ${shown.length} 条`
-    : "通道剩余";
-  const clear = state.status ? `<button type="button" class="clear-status">看全部</button>` : "";
+  const marks = [state.scheme, state.status].filter(Boolean);
+  const title = marks.length ? `通道剩余 · ${marks.join(" · ")} ${shown.length} 条` : "通道剩余";
+  const clear = marks.length ? `<button type="button" class="clear-status">看全部</button>` : "";
 
   return `
-    <section class="remain-hero">
-      <p class="hero-kicker">今天还可打款</p>
-      <p class="hero-num">${t.known ? wan(Math.max(0, t.left)) : "无法计量"}</p>
-      <p class="hero-sub">${t.known ? Math.max(0, t.leftTxn).toLocaleString("zh-CN") + " 笔 · 已用 " + wan(t.used) + " / 产能 " + wan(t.cap) + " · " + pct(t) : "限额未知"}</p>
-      <p class="hero-legend"><i class="lg-used"></i>已用 <i class="lg-rest"></i>剩余</p>
+    <section class="dash-card dash-kpis">
+      <p class="dash-label">核心数据</p>
+      <div class="dash-kpi-grid">
+        <article>
+          <span>还可打款</span>
+          <strong>${t.known ? wan(Math.max(0, t.left)) : "—"}</strong>
+          <em>${t.known ? Math.max(0, t.leftTxn).toLocaleString("zh-CN") + " 笔" : "限额未知"}</em>
+        </article>
+        <article>
+          <span>今日已用</span>
+          <strong>${t.known ? wan(t.used) : "—"}</strong>
+          <em>${t.known ? t.usedTxn.toLocaleString("zh-CN") + " 笔" : ""}</em>
+        </article>
+        <article>
+          <span>今日产能</span>
+          <strong>${t.known ? wan(t.cap) : "—"}</strong>
+          <em>${t.known ? t.capTxn.toLocaleString("zh-CN") + " 笔" : ""}</em>
+        </article>
+        <article class="kpi-rate">
+          ${t.known ? donutSvg(t.rate) : ""}
+          <div>
+            <span>使用率</span>
+            <strong>${t.known ? pct(t) : "—"}</strong>
+            <em>${t.unknown ? t.unknown + " 条未计入" : "可计量 " + t.known + " 条"}</em>
+          </div>
+        </article>
+      </div>
     </section>
+    <section class="scheme-card-grid">${renderSchemeCards(scoped())}</section>
     <section class="method-remain-grid status-row">${statuses}</section>
-    <section class="panel bar-panel">
+    <section class="panel bar-panel dash-card">
       <h2>${title}${clear}</h2>
       <div class="bar-list">${rows || `<p class="muted">没有通道</p>`}</div>
     </section>`;
@@ -326,19 +497,33 @@ function syncFilters() {
   document.querySelectorAll("#cap-filters button[data-status]").forEach((b) => {
     b.classList.toggle("on", (b.getAttribute("data-status") || "") === state.status);
   });
+  document.querySelectorAll("#cap-filters button[data-scheme]").forEach((b) => {
+    b.classList.toggle("on", (b.getAttribute("data-scheme") || "") === state.scheme);
+  });
 }
 
 function render() {
   const list = visible();
   if (state.status && !list.some((ch) => statusOf(ch) === state.status)) state.status = "";
+  if (state.scheme && !scoped().some((ch) => ch.scheme === state.scheme)) state.scheme = "";
   document.body.dataset.style = "remain";
   $("view").innerHTML = renderRemain(list);
+  $("cap-chart").innerHTML = renderChart(list);
+  $("cap-split").innerHTML = renderSplit(list);
   syncFilters();
 }
 
 $("view").addEventListener("click", (e) => {
   if (e.target.closest(".clear-status")) {
     state.status = "";
+    state.scheme = "";
+    render();
+    return;
+  }
+  const schemeCard = e.target.closest(".scheme-card[data-scheme]");
+  if (schemeCard && !schemeCard.disabled) {
+    const scheme = schemeCard.dataset.scheme;
+    state.scheme = state.scheme === scheme ? "" : scheme;
     render();
     return;
   }
@@ -355,6 +540,7 @@ $("cap-filters").addEventListener("click", (e) => {
   if (btn.hasAttribute("data-scene")) state.scene = btn.getAttribute("data-scene") || "";
   if (btn.hasAttribute("data-method")) state.method = btn.getAttribute("data-method") || "";
   if (btn.hasAttribute("data-status")) state.status = btn.getAttribute("data-status") || "";
+  if (btn.hasAttribute("data-scheme")) state.scheme = btn.getAttribute("data-scheme") || "";
   render();
 });
 

@@ -4,20 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>打款产能报表</title>
-  <link rel="stylesheet" href="./styles.css?v=15" />
+  <link rel="stylesheet" href="./styles.css?v=25" />
 </head>
 <body class="page-capacity">
-  <header class="top">
-    <div>
-      <p class="kicker">内部方案实例 · 2026年11月2日 · 模拟今日已用</p>
-      <h1>打款产能报表</h1>
+  <header class="dash-top">
+    <h1>打款产能报表</h1>
+    <div class="dash-pills">
+      <span>内部方案实例</span>
+      <span>2026-11-02</span>
+      <span>模拟今日已用</span>
+      <span>方案划分模拟</span>
     </div>
-    <div class="top-actions">
-      <a class="text-btn" href="./index.html">周期估算</a>
-    </div>
+    <a class="text-btn" href="./index.html">周期估算</a>
   </header>
 
-  <div class="cap-filters look-chips" id="cap-filters">
+  <div class="dash-row">
+  <section class="dash-card cap-filters look-chips" id="cap-filters">
+    <p class="dash-label">筛选条件</p>
     <div class="filter-line">
       <span>场景</span>
       <div class="seg filter">
@@ -37,6 +40,14 @@
       </div>
     </div>
     <div class="filter-line">
+      <span>方案</span>
+      <div class="seg filter">
+        <button type="button" data-scheme="" class="on">全部</button>
+        <button type="button" data-scheme="连续劳务">连续劳务</button>
+        <button type="button" data-scheme="非税方案">非税方案</button>
+      </div>
+    </div>
+    <div class="filter-line">
       <span>状态</span>
       <div class="seg filter">
         <button type="button" data-status="" class="on">全部</button>
@@ -46,10 +57,13 @@
         <button type="button" data-status="未知">未知</button>
       </div>
     </div>
+    <div id="cap-split"></div>
+  </section>
+  <section class="dash-card" id="cap-chart"></section>
   </div>
 
   <div id="view" class="cap-view"></div>
 
-  <script src="./capacity.js?v=16"></script>
+  <script src="./capacity.js?v=25"></script>
 </body>
 </html>
