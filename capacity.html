@@ -4,15 +4,28 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>打款产能报表</title>
-  <link rel="stylesheet" href="./styles.css?v=25" />
+  <link rel="stylesheet" href="./styles.css?v=30" />
 </head>
 <body class="page-capacity">
   <header class="dash-top">
     <h1>打款产能报表</h1>
     <div class="dash-pills">
       <span>内部方案实例</span>
-      <span>2026-11-02</span>
-      <span>模拟今日已用</span>
+      <div class="date-wrap" id="date-wrap">
+        <button type="button" class="date-btn" id="date-btn">2026-11-02</button>
+        <div class="date-pop" id="date-pop" hidden>
+          <div class="date-presets">
+            <button type="button" data-range="day">当天</button>
+            <button type="button" data-range="7">近7日</button>
+            <button type="button" data-range="30">近30日</button>
+          </div>
+          <div class="date-fields">
+            <label>开始<input type="date" id="date-from" min="2026-10-01" max="2026-11-05" value="2026-11-02" /></label>
+            <label>结束<input type="date" id="date-to" min="2026-10-01" max="2026-11-05" value="2026-11-02" /></label>
+          </div>
+        </div>
+      </div>
+      <span id="used-pill">模拟当日已用</span>
       <span>方案划分模拟</span>
     </div>
     <a class="text-btn" href="./index.html">周期估算</a>
@@ -64,6 +77,6 @@
 
   <div id="view" class="cap-view"></div>
 
-  <script src="./capacity.js?v=25"></script>
+  <script src="./capacity.js?v=30"></script>
 </body>
 </html>

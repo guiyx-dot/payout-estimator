@@ -22,9 +22,90 @@ const METHOD_ORDER = ["微信", "支付宝", "银行卡"];
 const SCENE_ORDER = ["新车", "续保", "事故车"];
 const STATUS_ORDER = ["充足", "紧张", "耗尽", "未知"];
 const SCHEME_ORDER = ["连续劳务", "非税方案"];
+const CHART_VIEWS = ["channel", "goods"];
+const GOODS = [
+  { id: "wx-coin", name: "微信通用币", line1: "微信", line2: "通用币", method: "微信", cap: 420000, used: 336000 },
+  { id: "wx-minus", name: "微信立减金", line1: "微信", line2: "立减金", method: "微信", cap: 180000, used: 126000 },
+  { id: "ali-coin", name: "支付宝通用币", line1: "支付宝", line2: "通用币", method: "支付宝", cap: 380000, used: 228000 },
+  { id: "ali-quan", name: "支付宝通用券", line1: "支付宝", line2: "通用券", method: "支付宝", cap: 260000, used: 182000 },
+  { id: "ali-plus", name: "支付宝通用券Plus", line1: "支付宝", line2: "通用券Plus", method: "支付宝", cap: 150000, used: 45000 },
+  { id: "ygf", name: "因公付", line1: "因公付", line2: "企业权益", method: "", cap: 90000, used: 27000 },
+  { id: "wjl", name: "万佳乐", line1: "万佳乐", line2: "京东E卡", method: "", cap: 70000, used: 14000 },
+];
+
+const TODAY = "2026-11-05";
+const DATE_MIN = "2026-10-01";
+const BASE_DAY = "2026-11-02";
 
 const $ = (id) => document.getElementById(id);
-const state = { scene: "", method: "", status: "", scheme: "" };
+const state = { scene: "", method: "", status: "", scheme: "", chart: "channel", from: BASE_DAY, to: BASE_DAY };
+
+function clampDate(s) {
+  if (!s || s < DATE_MIN) return DATE_MIN;
+  if (s > TODAY) return TODAY;
+  return s;
+}
+function shiftDate(s, days) {
+  const d = new Date(s + "T00:00:00");
+  d.setDate(d.getDate() + days);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return clampDate(`${y}-${m}-${day}`);
+}
+function dayList() {
+  let from = clampDate(state.from);
+  let to = clampDate(state.to);
+  if (from > to) [from, to] = [to, from];
+  state.from = from;
+  state.to = to;
+  const out = [];
+  let cur = from;
+  while (cur <= to) {
+    out.push(cur);
+    const next = shiftDate(cur, 1);
+    if (next === cur) break;
+    cur = next;
+  }
+  return out;
+}
+function hash01(str) {
+  let h = 2166136261;
+  for (let i = 0; i < str.length; i++) h = Math.imul(h ^ str.charCodeAt(i), 16777619);
+  return (h >>> 0) / 4294967296;
+}
+function scaleDay(base, cap, key, date) {
+  if (base == null || cap == null) return base;
+  if (date === BASE_DAY) return Math.min(cap, base);
+  const dow = new Date(date + "T00:00:00").getDay();
+  const weekend = dow === 0 || dow === 6 ? 0.7 : 1;
+  const f = (0.42 + hash01(key + "|" + date) * 0.58) * weekend;
+  return Math.min(cap, Math.max(0, Math.round(base * f)));
+}
+function datedChannels() {
+  const days = dayList();
+  const n = days.length;
+  return CHANNELS.map((ch) => {
+    if (ch.unknown || ch.capAmount == null) return { ...ch };
+    const usedAmount = days.reduce((s, d) => s + scaleDay(ch.usedAmount, ch.capAmount, ch.id, d), 0);
+    const usedTxn = ch.capTxn == null ? ch.usedTxn : days.reduce((s, d) => s + scaleDay(ch.usedTxn, ch.capTxn, ch.id + "-txn", d), 0);
+    return {
+      ...ch,
+      capAmount: ch.capAmount * n,
+      capTxn: ch.capTxn == null ? ch.capTxn : ch.capTxn * n,
+      usedAmount,
+      usedTxn,
+    };
+  });
+}
+function datedGoods() {
+  const days = dayList();
+  const n = days.length;
+  return GOODS.map((g) => {
+    const used = days.reduce((s, d) => s + scaleDay(g.used, g.cap, g.id, d), 0);
+    return { ...g, cap: g.cap * n, used };
+  });
+}
 
 function yuan(n) {
   return n.toLocaleString("zh-CN", { maximumFractionDigits: 0 });
@@ -52,7 +133,7 @@ function barClass(st) {
   return st === "耗尽" ? "empty" : st === "紧张" ? "tight" : st === "未知" ? "unk" : "ok";
 }
 function scoped() {
-  return CHANNELS.filter((ch) => {
+  return datedChannels().filter((ch) => {
     if (state.scene && !ch.scenes.includes(state.scene)) return false;
     if (state.method && ch.method !== state.method) return false;
     return true;
@@ -121,7 +202,7 @@ function methodRows(list) {
 
 function sceneRows() {
   return SCENE_ORDER.map((scene) => {
-    const subset = CHANNELS.filter((ch) => {
+    const subset = datedChannels().filter((ch) => {
       if (!ch.scenes.includes(scene)) return false;
       if (state.method && ch.method !== state.method) return false;
       if (state.scene && scene !== state.scene) return false;
@@ -220,7 +301,6 @@ function renderSchemePair(list) {
     <div class="scheme-block">
     <div class="chart-head">
       <p class="dash-label">方案对比</p>
-      <p class="muted">两边产能、已用、还可打并排看，用来倾向选供和分流</p>
     </div>
     <div class="scheme-pair">${head}${rows}</div>
     <p class="scheme-rate">${rates}</p>
@@ -248,7 +328,16 @@ function renderSchemeCards(list) {
   }).join("");
 }
 
-function renderChart(list) {
+function visibleGoods() {
+  return datedGoods().filter((g) => {
+    if (state.method === "微信" || state.method === "支付宝") {
+      return !g.method || g.method === state.method;
+    }
+    return true;
+  });
+}
+
+function renderChannelBars(list) {
   const bars = list
     .filter((ch) => !ch.unknown && ch.capAmount)
     .sort((a, b) => b.usedAmount / b.capAmount - a.usedAmount / a.capAmount)
@@ -265,18 +354,52 @@ function renderChart(list) {
       </div>`;
     })
     .join("");
+  return { cols, hint: "柱高是已用占日产能，最多看 8 条", goods: false };
+}
+
+function renderGoodsBars() {
+  const goods = visibleGoods().slice().sort((a, b) => b.used / b.cap - a.used / a.cap);
+  const cols = goods
+    .map((g) => {
+      const rate = Math.min(100, Math.round((g.used / g.cap) * 100));
+      const tone = rate >= 80 ? "hot" : rate >= 50 ? "mid" : "low";
+      const cls = g.method === "微信" ? "gd-wx" : g.method === "支付宝" ? "gd-ali" : "gd-other";
+      return `<div class="vbar ${cls} ${tone}">
+        <span>${rate}%</span>
+        <div class="vbar-col"><i style="height:${rate}%"></i></div>
+        <em>${g.line1}</em>
+        <b>${g.line2}</b>
+      </div>`;
+    })
+    .join("");
+  return { cols, hint: "柱高是今日已发放占计划，模拟", goods: true };
+}
+
+function chartTitle() {
+  return state.chart === "goods" ? "商品发放率" : "通道使用率";
+}
+
+function chartPaneHtml(list) {
+  const view = state.chart === "goods" ? renderGoodsBars() : renderChannelBars(list);
   return `
     <div class="chart-block">
-      <div class="chart-head">
-        <p class="dash-label">通道使用率</p>
-        <p class="muted">柱高是已用占日产能，最多看 8 条</p>
+      <div class="chart-head chart-switch">
+        <div class="chart-switch-title">
+          <button type="button" class="chart-nav" data-chart="prev" aria-label="上一图">‹</button>
+          <p class="dash-label">${chartTitle()}</p>
+          <button type="button" class="chart-nav" data-chart="next" aria-label="下一图">›</button>
+        </div>
+        <p class="muted">${view.hint}</p>
       </div>
       <div class="vbars-wrap">
-        <div class="vbars-y"><span>100%</span><span>50%</span><span>0%</span></div>
-        <div class="vbars">${cols || `<p class="muted">没有可计量通道</p>`}</div>
+        <div class="vbars-y${view.goods ? " goods-y" : ""}"><span>100%</span><span>50%</span><span>0%</span></div>
+        <div class="vbars">${view.cols || `<p class="muted">没有可计量数据</p>`}</div>
       </div>
-    </div>
-    ${renderSchemePair(scoped())}`;
+    </div>`;
+}
+
+function renderChart(list) {
+  return chartPaneHtml(list) + renderSchemePair(scoped());
 }
 
 function methodSplitBar(s, st) {
@@ -391,12 +514,12 @@ function renderRemain(list) {
           <em>${t.known ? Math.max(0, t.leftTxn).toLocaleString("zh-CN") + " 笔" : "限额未知"}</em>
         </article>
         <article>
-          <span>今日已用</span>
+          <span>${dayList().length === 1 ? "今日已用" : "区间已用"}</span>
           <strong>${t.known ? wan(t.used) : "—"}</strong>
           <em>${t.known ? t.usedTxn.toLocaleString("zh-CN") + " 笔" : ""}</em>
         </article>
         <article>
-          <span>今日产能</span>
+          <span>${dayList().length === 1 ? "今日产能" : "区间产能"}</span>
           <strong>${t.known ? wan(t.cap) : "—"}</strong>
           <em>${t.known ? t.capTxn.toLocaleString("zh-CN") + " 笔" : ""}</em>
         </article>
@@ -419,7 +542,7 @@ function renderRemain(list) {
 }
 
 function matrixCell(scene, method) {
-  const subset = CHANNELS.filter((ch) => {
+  const subset = datedChannels().filter((ch) => {
     if (!ch.scenes.includes(scene) || ch.method !== method) return false;
     if (state.scene && scene !== state.scene) return false;
     if (state.method && method !== state.method) return false;
@@ -502,6 +625,32 @@ function syncFilters() {
   });
 }
 
+function dateLabel() {
+  const days = dayList();
+  return days.length === 1 ? days[0] : days[0] + " ~ " + days[days.length - 1];
+}
+function syncDate() {
+  const days = dayList();
+  $("date-btn").textContent = dateLabel();
+  $("date-from").value = state.from;
+  $("date-to").value = state.to;
+  $("used-pill").textContent = days.length === 1 ? "模拟当日已用" : "模拟 " + days.length + " 日已用";
+  document.querySelectorAll("#date-pop [data-range]").forEach((b) => {
+    const key = b.getAttribute("data-range");
+    const on = key === "day" ? days.length === 1 && state.to === TODAY
+      : key === "7" ? days.length === 7 && state.to === TODAY
+      : key === "30" ? days.length === 30 && state.to === TODAY
+      : false;
+    b.classList.toggle("on", on);
+  });
+}
+function applyDates(from, to) {
+  state.from = clampDate(from);
+  state.to = clampDate(to);
+  if (state.from > state.to) [state.from, state.to] = [state.to, state.from];
+  render();
+}
+
 function render() {
   const list = visible();
   if (state.status && !list.some((ch) => statusOf(ch) === state.status)) state.status = "";
@@ -511,6 +660,7 @@ function render() {
   $("cap-chart").innerHTML = renderChart(list);
   $("cap-split").innerHTML = renderSplit(list);
   syncFilters();
+  syncDate();
 }
 
 $("view").addEventListener("click", (e) => {
@@ -534,6 +684,102 @@ $("view").addEventListener("click", (e) => {
   render();
 });
 
+let chartTimer = 0;
+let chartBusy = false;
+let chartAuto = true;
+let pendingDir = 0;
+function stopChartTimer() {
+  chartAuto = false;
+  pendingDir = 0;
+  clearInterval(chartTimer);
+  chartTimer = 0;
+}
+function startChartTimer() {
+  chartAuto = true;
+  clearInterval(chartTimer);
+  chartTimer = setInterval(() => {
+    if (!chartAuto || chartBusy) return;
+    stepChart(1);
+  }, 3000);
+}
+function once(fn) {
+  let done = false;
+  return () => {
+    if (done) return;
+    done = true;
+    fn();
+  };
+}
+function onBlockEnd(el, fn) {
+  const run = once(fn);
+  const onEnd = (e) => {
+    if (e.target !== el) return;
+    el.removeEventListener("animationend", onEnd);
+    run();
+  };
+  el.addEventListener("animationend", onEnd);
+  setTimeout(run, 320);
+}
+function stepChart(dir) {
+  if (chartBusy) {
+    pendingDir = dir;
+    return;
+  }
+  const i = CHART_VIEWS.indexOf(state.chart);
+  state.chart = CHART_VIEWS[(i + dir + CHART_VIEWS.length) % CHART_VIEWS.length];
+  const block = document.querySelector("#cap-chart .chart-block");
+  if (!block) {
+    render();
+    return;
+  }
+  chartBusy = true;
+  const outCls = dir > 0 ? "chart-out-left" : "chart-out-right";
+  const inCls = dir > 0 ? "chart-in-right" : "chart-in-left";
+  onBlockEnd(block, () => {
+    const wrap = document.createElement("div");
+    wrap.innerHTML = chartPaneHtml(visible()).trim();
+    const next = wrap.firstElementChild;
+    next.classList.add(inCls);
+    block.replaceWith(next);
+    onBlockEnd(next, () => {
+      next.classList.remove(inCls);
+      chartBusy = false;
+      const queued = pendingDir;
+      pendingDir = 0;
+      if (queued) stepChart(queued);
+    });
+  });
+  block.classList.add(outCls);
+}
+
+$("cap-chart").addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-chart]");
+  if (!btn) return;
+  stopChartTimer();
+  const dir = btn.getAttribute("data-chart") === "next" ? 1 : -1;
+  stepChart(dir);
+});
+
+$("date-btn").addEventListener("click", (e) => {
+  e.stopPropagation();
+  $("date-pop").hidden = !$("date-pop").hidden;
+});
+$("date-pop").addEventListener("click", (e) => {
+  e.stopPropagation();
+  const preset = e.target.closest("[data-range]");
+  if (!preset) return;
+  const key = preset.getAttribute("data-range");
+  if (key === "day") applyDates(TODAY, TODAY);
+  else if (key === "7") applyDates(shiftDate(TODAY, -6), TODAY);
+  else if (key === "30") applyDates(shiftDate(TODAY, -29), TODAY);
+  $("date-pop").hidden = true;
+});
+$("date-from").addEventListener("change", () => applyDates($("date-from").value, $("date-to").value));
+$("date-to").addEventListener("change", () => applyDates($("date-from").value, $("date-to").value));
+document.addEventListener("click", () => {
+  $("date-pop").hidden = true;
+});
+
 $("cap-filters").addEventListener("click", (e) => {
   const btn = e.target.closest("button");
   if (!btn) return;
@@ -545,3 +791,4 @@ $("cap-filters").addEventListener("click", (e) => {
 });
 
 render();
+startChartTimer();
